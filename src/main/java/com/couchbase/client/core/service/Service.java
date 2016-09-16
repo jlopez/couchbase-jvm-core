@@ -15,6 +15,8 @@
  */
 package com.couchbase.client.core.service;
 
+import java.util.List;
+
 import com.couchbase.client.core.CoreContext;
 import com.couchbase.client.core.ResponseEvent;
 import com.couchbase.client.core.endpoint.Endpoint;
@@ -77,6 +79,13 @@ public interface Service extends Stateful<LifecycleState> {
      * Returns endpoint health information for all endpoints this service is currently associated with.
      */
     Observable<EndpointHealth> diagnostics();
+
+    /**
+     * Returns the current list of endpoints.
+     *
+     * @return the list of endpoints.
+     */
+    List<Endpoint> endpoints();
 
     /**
      * A helper factory which generates endpoints.

@@ -69,7 +69,6 @@ import rx.functions.Func1;
 import rx.subjects.AsyncSubject;
 import rx.subjects.Subject;
 
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLHandshakeException;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -707,7 +706,8 @@ public abstract class AbstractEndpoint extends AbstractStateMachine<LifecycleSta
      *
      * @return the bucket name.
      */
-    protected String bucket() {
+    @Override
+    public String bucket() {
         return bucket;
     }
 
@@ -759,6 +759,16 @@ public abstract class AbstractEndpoint extends AbstractStateMachine<LifecycleSta
     @Override
     public String remoteAddress() {
         return this.hostname + ":" + this.port;
+    }
+
+    /**
+     * Returns the channel used by this endpoint.
+     *
+     * @return the netty channel
+     */
+    @Override
+    public Channel channel() {
+        return channel;
     }
 
     /**

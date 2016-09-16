@@ -464,7 +464,7 @@ public abstract class PooledService extends AbstractStateMachine<LifecycleState>
     /**
      * Returns the current endpoint list, for testing verification purposes.
      */
-    protected List<Endpoint> endpoints() {
+    public List<Endpoint> endpoints() {
         return endpoints;
     }
 }

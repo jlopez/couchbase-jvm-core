@@ -81,4 +81,10 @@ public interface Node extends Stateful<LifecycleState> {
      */
     Observable<EndpointHealth> diagnostics();
 
+    /**
+     * The service registry for this node.
+     *
+     * @return the service registry
+     */
+    public ServiceRegistry serviceRegistry();
 }

@@ -142,3 +142,26 @@ tagged (important!) and then run `mvn clean deploy`.
 
 This will stage and close it, but not release it. Then head over to [sonatype](http://oss.sonatype.org)
 do a final check and then release it.
+
+# Jam City Instrumentation patch
+To upload to artifactory:
+`mvn deploy`
+
+If permission errors, ensure `.m2/settings.xml` has this:
+
+    <settings>
+      <servers>
+        <server>
+          <id>artifactory</id>
+          <username>ARTIFACTORY_USER</username>
+          <password>ARTIFACTORY_PASSWORD</password>
+        </server>
+      </servers>
+    </settings>
+
+This will also run all integration tests.
+
+## Tests
+To just run the tests use `mvn test`. A couchbase database with a "default" bucket is needed.
+The admin user/pwd should be Administrator/password . Or change these settings in the
+`src/test/resources/integration/integration.properties` file

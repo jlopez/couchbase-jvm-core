@@ -21,6 +21,8 @@ import com.couchbase.client.core.message.internal.EndpointHealth;
 import com.couchbase.client.core.service.ServiceType;
 import com.couchbase.client.core.state.LifecycleState;
 import com.couchbase.client.core.state.Stateful;
+
+import io.netty.channel.Channel;
 import rx.Observable;
 import rx.Single;
 
@@ -76,4 +78,18 @@ public interface Endpoint extends Stateful<LifecycleState> {
      * separated by colon.
      */
     String remoteAddress();
+
+    /**
+     * The bucket.
+     *
+     * @return the bucket
+     */
+    String bucket();
+
+    /**
+     * The channel.
+     *
+     * @return the channel
+     */
+    Channel channel();
 }

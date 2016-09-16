@@ -217,6 +217,10 @@ public class CouchbaseNode extends AbstractStateMachine<LifecycleState> implemen
         }
     }
 
+    public ServiceRegistry serviceRegistry() {
+        return serviceRegistry;
+    }
+
     @Override
     public String hostname() {
         return hostname;

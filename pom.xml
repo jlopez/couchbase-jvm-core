@@ -16,7 +16,7 @@
 
     <groupId>com.couchbase.client</groupId>
     <artifactId>core-io</artifactId>
-    <version>1.7.9</version>
+    <version>1.7.10-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Couchbase JVM Core IO</name>
@@ -509,12 +509,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>artifactory</id>
+            <url>https://artifactory.sgn.com/artifactory/ext-snapshot-local</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>artifactory</id>
+            <url>https://artifactory.sgn.com/artifactory/ext-release-local</url>
         </repository>
     </distributionManagement>
 

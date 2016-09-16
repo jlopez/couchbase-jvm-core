@@ -25,7 +25,7 @@ import rx.subjects.Subject;
  * @author Michael Nitschinger
  * @since 1.0
  */
-public class ResponseEvent {
+public class ResponseEvent extends TimedEvent {
 
     /**
      * Contains the current response message.
@@ -42,6 +42,7 @@ public class ResponseEvent {
      */
     public ResponseEvent setMessage(final CouchbaseMessage message) {
         this.message = message;
+        updateTimestamp();
         return this;
     }
 

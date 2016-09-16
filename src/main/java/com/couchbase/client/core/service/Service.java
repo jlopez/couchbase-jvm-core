@@ -15,12 +15,12 @@
  */
 package com.couchbase.client.core.service;
 
+import java.util.List;
+
 import com.couchbase.client.core.ResponseEvent;
 import com.couchbase.client.core.endpoint.Endpoint;
 import com.couchbase.client.core.env.CoreEnvironment;
 import com.couchbase.client.core.message.CouchbaseRequest;
-import com.couchbase.client.core.message.CouchbaseResponse;
-import com.couchbase.client.core.node.Node;
 import com.couchbase.client.core.state.LifecycleState;
 import com.couchbase.client.core.state.Stateful;
 import com.lmax.disruptor.RingBuffer;
@@ -70,6 +70,13 @@ public interface Service extends Stateful<LifecycleState> {
      * @return the states of the {@link Service} after the disconnect process for all enabled {@link Endpoint}s.
      */
     Observable<LifecycleState> disconnect();
+
+    /**
+     * Returns the current list of endpoints.
+     *
+     * @return the list of endpoints.
+     */
+    List<Endpoint> endpoints();
 
     /**
      * A helper factory which generates endpoints.

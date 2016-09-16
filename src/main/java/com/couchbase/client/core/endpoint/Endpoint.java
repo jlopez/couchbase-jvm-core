@@ -16,9 +16,10 @@
 package com.couchbase.client.core.endpoint;
 
 import com.couchbase.client.core.message.CouchbaseRequest;
-import com.couchbase.client.core.message.CouchbaseResponse;
 import com.couchbase.client.core.state.LifecycleState;
 import com.couchbase.client.core.state.Stateful;
+
+import io.netty.channel.Channel;
 import rx.Observable;
 
 /**
@@ -50,4 +51,17 @@ public interface Endpoint extends Stateful<LifecycleState> {
      */
     void send(CouchbaseRequest request);
 
+    /**
+     * The bucket.
+     *
+     * @return the bucket
+     */
+    String bucket();
+
+    /**
+     * The channel.
+     *
+     * @return the channel
+     */
+    Channel channel();
 }

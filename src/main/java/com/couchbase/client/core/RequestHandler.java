@@ -46,7 +46,6 @@ import com.couchbase.client.core.node.locate.ViewLocator;
 import com.couchbase.client.core.service.Service;
 import com.couchbase.client.core.service.ServiceType;
 import com.couchbase.client.core.state.LifecycleState;
-import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import rx.Observable;
 import rx.Subscriber;
@@ -55,6 +54,8 @@ import rx.functions.Func1;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Michael Nitschinger
  * @since 1.0
  */
-public class RequestHandler implements EventHandler<RequestEvent> {
+public class RequestHandler extends SequenceAwareEventHandler<RequestEvent> {
 
     /**
      * The logger used.
@@ -185,6 +186,7 @@ public class RequestHandler implements EventHandler<RequestEvent> {
     @Override
     public void onEvent(final RequestEvent event, final long sequence, final boolean endOfBatch) throws Exception {
         try {
+            super.onEvent(event, sequence, endOfBatch);
             dispatchRequest(event.getRequest());
         } finally {
             event.setRequest(null);
@@ -229,6 +231,10 @@ public class RequestHandler implements EventHandler<RequestEvent> {
         }
 
         locator(request).locateAndDispatch(request, nodes, config, environment, responseBuffer);
+    }
+
+    public Collection<Node> nodes() {
+        return Collections.unmodifiableList(nodes);
     }
 
     /**

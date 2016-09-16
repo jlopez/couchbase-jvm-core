@@ -143,6 +143,8 @@ public abstract class AbstractGenericHandler<RESPONSE, ENCODED, REQUEST extends 
      */
     private ChannelPromise connectFuture;
 
+    private Listener<? super REQUEST, ? super RESPONSE> listener;
+
     /**
      * Returns the remote http host in usable format.
      */
@@ -223,6 +225,14 @@ public abstract class AbstractGenericHandler<RESPONSE, ENCODED, REQUEST extends 
     protected void decode(ChannelHandlerContext ctx, RESPONSE msg, List<Object> out) throws Exception {
         if (currentDecodingState == DecodingState.INITIAL) {
             initialDecodeTasks(ctx);
+        }
+
+        if (listener != null) {
+            try {
+                listener.onMessage(currentRequest, msg, currentOpTime);
+            } catch (Throwable t) {
+                LOGGER.warn("Ignoring listener exception", t);
+            }
         }
 
         try {
@@ -599,8 +609,24 @@ public abstract class AbstractGenericHandler<RESPONSE, ENCODED, REQUEST extends 
     /**
      * The parent endpoint.
      */
-    protected AbstractEndpoint endpoint() {
+    public AbstractEndpoint endpoint() {
         return endpoint;
+    }
+
+    public long pendingRequestCount() {
+        return sentRequestQueue.size();
+    }
+
+    public Listener<? super REQUEST, ? super RESPONSE> listener() {
+		return listener;
+	}
+
+    public void listener(Listener<? super REQUEST, ? super RESPONSE> listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener<REQUEST, RESPONSE> {
+        void onMessage(REQUEST req, RESPONSE resp, long delay);
     }
 
     /**

@@ -29,7 +29,7 @@ import com.couchbase.client.core.message.CouchbaseRequest;
  * @author Michael Nitschinger
  * @since 1.0
  */
-public class RequestEvent {
+public class RequestEvent extends TimedEvent {
 
     /**
      * Contains the current request.
@@ -44,6 +44,7 @@ public class RequestEvent {
      */
     public RequestEvent setRequest(final CouchbaseRequest request) {
         this.request = request;
+        updateTimestamp();
         return this;
     }
 

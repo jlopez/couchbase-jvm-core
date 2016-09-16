@@ -187,7 +187,7 @@ public abstract class AbstractDynamicService extends AbstractStateMachine<Lifecy
      *
      * @return the list of endpoints.
      */
-    protected Endpoint[] endpoints() {
+    public Endpoint[] endpoints() {
         return endpoints;
     }
 

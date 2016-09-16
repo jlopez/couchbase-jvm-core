@@ -60,7 +60,6 @@ import rx.Observable;
 import rx.subjects.AsyncSubject;
 import rx.subjects.Subject;
 
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.net.SocketAddress;
@@ -458,7 +457,8 @@ public abstract class AbstractEndpoint extends AbstractStateMachine<LifecycleSta
      *
      * @return the bucket name.
      */
-    protected String bucket() {
+    @Override
+    public String bucket() {
         return bucket;
     }
 
@@ -487,6 +487,16 @@ public abstract class AbstractEndpoint extends AbstractStateMachine<LifecycleSta
      */
     public RingBuffer<ResponseEvent> responseBuffer() {
         return responseBuffer;
+    }
+
+    /**
+     * Returns the channel used by this endpoint.
+     *
+     * @return the netty channel
+     */
+    @Override
+    public Channel channel() {
+        return channel;
     }
 
     /**

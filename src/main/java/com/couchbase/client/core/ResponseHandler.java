@@ -30,14 +30,14 @@ import com.couchbase.client.core.message.ResponseStatus;
 import com.couchbase.client.core.message.internal.SignalConfigReload;
 import com.couchbase.client.core.message.kv.BinaryResponse;
 import com.couchbase.client.core.time.Delay;
-import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.EventTranslatorTwoArg;
+
 import io.netty.util.CharsetUtil;
 import rx.Scheduler;
 import rx.functions.Action0;
 import rx.subjects.Subject;
 
-public class ResponseHandler implements EventHandler<ResponseEvent> {
+public class ResponseHandler extends SequenceAwareEventHandler<ResponseEvent> {
 
     private final ClusterFacade cluster;
     private final ConfigurationProvider configurationProvider;
@@ -86,6 +86,7 @@ public class ResponseHandler implements EventHandler<ResponseEvent> {
     @Override
     public void onEvent(final ResponseEvent event, long sequence, boolean endOfBatch) throws Exception {
         try {
+            super.onEvent(event, sequence, endOfBatch);
             CouchbaseMessage message = event.getMessage();
             if (message instanceof SignalConfigReload) {
                 configurationProvider.signalOutdated();

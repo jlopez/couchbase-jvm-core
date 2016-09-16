@@ -80,4 +80,10 @@ public interface Node extends Stateful<LifecycleState> {
      */
     boolean serviceEnabled(ServiceType type);
 
+    /**
+     * The service registry for this node.
+     *
+     * @return the service registry
+     */
+    public ServiceRegistry serviceRegistry();
 }

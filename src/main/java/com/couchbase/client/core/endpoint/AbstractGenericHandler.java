@@ -126,6 +126,8 @@ public abstract class AbstractGenericHandler<RESPONSE, ENCODED, REQUEST extends 
      */
     private ChannelPromise connectFuture;
 
+    private Listener<? super REQUEST, ? super RESPONSE> listener;
+
     /**
      * Creates a new {@link AbstractGenericHandler} with the default queue.
      *
@@ -211,6 +213,14 @@ public abstract class AbstractGenericHandler<RESPONSE, ENCODED, REQUEST extends 
 
             if (traceEnabled) {
                 LOGGER.trace("{}Started decoding of {}", logIdent(ctx, endpoint), currentRequest);
+            }
+        }
+
+        if (listener != null) {
+            try {
+                listener.onMessage(currentRequest, msg, currentOpTime);
+            } catch (Throwable t) {
+                LOGGER.warn("Ignoring listener exception", t);
             }
         }
 
@@ -480,8 +490,24 @@ public abstract class AbstractGenericHandler<RESPONSE, ENCODED, REQUEST extends 
     /**
      * The parent endpoint.
      */
-    protected AbstractEndpoint endpoint() {
+    public AbstractEndpoint endpoint() {
         return endpoint;
+    }
+
+    public long pendingRequestCount() {
+        return sentRequestQueue.size();
+    }
+
+    public Listener<? super REQUEST, ? super RESPONSE> listener() {
+		return listener;
+	}
+
+    public void listener(Listener<? super REQUEST, ? super RESPONSE> listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener<REQUEST, RESPONSE> {
+        void onMessage(REQUEST req, RESPONSE resp, long delay);
     }
 
     /**

@@ -107,6 +107,11 @@ public class CouchbaseCore implements ClusterFacade {
     private final RequestHandler requestHandler;
 
     /**
+     * The handler for processing enqueued responses
+     */
+    private final ResponseHandler responseHandler;
+
+    /**
      * The configuration provider in use.
      */
     private final ConfigurationProvider configProvider;
@@ -166,7 +171,8 @@ public class CouchbaseCore implements ClusterFacade {
                 LOGGER.info("Exception while shutting down Response RingBuffer", ex);
             }
         });
-        responseDisruptor.handleEventsWith(new ResponseHandler(environment, this, configProvider));
+        responseHandler = new ResponseHandler(environment, this, configProvider);
+        responseDisruptor.handleEventsWith(responseHandler);
         responseDisruptor.start();
         RingBuffer<ResponseEvent> responseRingBuffer = responseDisruptor.getRingBuffer();
 
@@ -213,6 +219,22 @@ public class CouchbaseCore implements ClusterFacade {
             }
             return (Observable<R>) request.observable();
         }
+    }
+
+    public Disruptor<RequestEvent> getRequestDisruptor() {
+        return requestDisruptor;
+    }
+
+    public Disruptor<ResponseEvent> getResponseDisruptor() {
+        return responseDisruptor;
+    }
+
+    public RequestHandler getRequestHandler() {
+        return requestHandler;
+    }
+
+    public ResponseHandler getResponseHandler() {
+        return responseHandler;
     }
 
     /**
